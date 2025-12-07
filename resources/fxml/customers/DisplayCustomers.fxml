@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.customers.DisplayCustomersController"
+      spacing="10" style="-fx-padding: 20;">
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Customer Management" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+        <Button text="Refresh" onAction="#handleRefresh" style="-fx-padding: 5 15;"/>
+    </HBox>
+    
+    <TableView fx:id="customersTable" style="-fx-padding: 10 0 0 0;">
+        <columns>
+            <TableColumn text="ID" fx:id="idColumn"/>
+            <TableColumn text="First Name" fx:id="firstNameColumn"/>
+            <TableColumn text="Last Name" fx:id="lastNameColumn"/>
+            <TableColumn text="Email" fx:id="emailColumn"/>
+            <TableColumn text="Phone" fx:id="phoneColumn"/>
+            <TableColumn text="License" fx:id="licenseColumn"/>
+        </columns>
+    </TableView>
+    
+    <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
+        <Button text="Add New Customer" onAction="#handleAddCustomer"/>
+        <Button text="Edit Customer" onAction="#handleEditCustomer" fx:id="editButton" disable="true"/>
+        <Button text="Delete Customer" onAction="#handleDeleteCustomer" fx:id="deleteButton" disable="true" style="-fx-background-color: #ff4444; -fx-text-fill: white;"/>
+        <Button text="Export to CSV" onAction="#handleExport"/>
+    </HBox>
+</VBox>

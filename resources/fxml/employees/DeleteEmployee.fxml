@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.employees.DeleteEmployeeController"
+      spacing="10" style="-fx-padding: 20;">
+    <Label text="Delete Employee" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    
+    <VBox spacing="10">
+        <Label text="Enter Employee ID:"/>
+        <HBox spacing="10">
+            <TextField fx:id="employeeIdField" promptText="Employee ID"/>
+            <Button text="Search" onAction="#handleSearchEmployee"/>
+        </HBox>
+        
+        <VBox spacing="10" style="-fx-padding: 10 0 0 0;">
+            <Label text="Employee Details" style="-fx-font-weight: bold;"/>
+            <Label fx:id="employeeDetailsLabel" wrapText="true" maxWidth="400"/>
+            <Label fx:id="confirmationLabel" style="-fx-text-fill: red;"/>
+            
+            <HBox spacing="10" visible="false" fx:id="actionButtons">
+                <Button fx:id="deleteButton" text="Confirm Delete" onAction="#handleDeleteEmployee" 
+                        style="-fx-background-color: #ff4444; -fx-text-fill: white;"/>
+                <Button text="Back" onAction="#handleBack"/>
+            </HBox>
+        </VBox>
+    </VBox>
+</VBox>

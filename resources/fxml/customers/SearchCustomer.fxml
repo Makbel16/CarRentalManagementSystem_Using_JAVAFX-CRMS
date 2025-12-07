@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.customers.SearchCustomerController"
+      spacing="10" style="-fx-padding: 20;">
+    <Label text="Search Customers" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    
+    <HBox spacing="10">
+        <ComboBox fx:id="searchTypeCombo" promptText="Search by..."/>
+        <TextField fx:id="searchField" promptText="Search term" onAction="#handleSearch"/>
+        <Button text="Search" onAction="#handleSearch"/>
+        <Button text="Clear" onAction="#handleClear"/>
+    </HBox>
+    
+    <TableView fx:id="resultsTable" style="-fx-padding: 10 0 0 0;">
+        <columns>
+            <TableColumn text="ID" fx:id="idColumn"/>
+            <TableColumn text="Name" fx:id="nameColumn"/>
+            <TableColumn text="Email" fx:id="emailColumn"/>
+            <TableColumn text="Phone" fx:id="phoneColumn"/>
+            <TableColumn text="License" fx:id="licenseColumn"/>
+        </columns>
+    </TableView>
+</VBox>

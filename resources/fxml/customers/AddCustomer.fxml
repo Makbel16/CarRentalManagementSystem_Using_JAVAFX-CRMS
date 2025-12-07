@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.customers.AddCustomerController"
+      spacing="10" style="-fx-padding: 20;">
+    <Label text="Add New Customer" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    
+    <GridPane hgap="10" vgap="10">
+        <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="firstNameField" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        
+        <Label text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        
+        <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        
+        <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        
+        <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <TextArea fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+        
+        <Label text="License Number:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <TextField fx:id="licenseNumberField" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        
+        <Label text="Date of Birth:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <DatePicker fx:id="dateOfBirthPicker" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+    </GridPane>
+    
+    <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
+        <Button text="Add Customer" onAction="#handleAddCustomer"/>
+        <Button text="Back" onAction="#handleBack"/>
+    </HBox>
+    
+    <Label fx:id="messageLabel"/>
+</VBox>

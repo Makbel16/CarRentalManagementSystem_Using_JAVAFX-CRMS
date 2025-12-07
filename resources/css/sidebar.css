@@ -1,0 +1,176 @@
+/* Sidebar styling */
+.sidebar {
+    -fx-background-color: linear-gradient(to bottom, #2c3e50, #34495e);
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 15, 0, 0, 5);
+}
+
+.sidebar-title {
+    -fx-text-fill: #ecf0f1;
+    -fx-font-weight: bold;
+    -fx-padding: 0 0 15 0;
+    -fx-font-size: 20px;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.5), 3, 0, 0, 1);
+}
+
+/* Base button styling - TRANSPARENT like car main buttons */
+.sidebar-button {
+    /* Transparent background like car main buttons */
+    -fx-background-color: rgba(255, 255, 255, 0.1);
+    
+    /* Glass effect borders */
+    -fx-background-radius: 8;
+    -fx-border-radius: 8;
+    -fx-border-color: rgba(255, 255, 255, 0.15);
+    -fx-border-width: 1.5;
+    
+    /* Text styling */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    
+    /* Layout */
+    -fx-padding: 15 20 15 20;
+    -fx-content-display: left;
+    -fx-graphic-text-gap: 15px;
+    -fx-alignment: center-left;
+    
+    /* Interactive */
+    -fx-cursor: hand;
+    
+    /* Shadow effect */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
+    
+    /* Smooth transitions */
+    -fx-transition: all 0.3s ease;
+}
+
+/* Hover effect - similar to car main buttons */
+.sidebar-button:hover {
+    /* Semi-transparent background on hover */
+    -fx-background-color: rgba(52, 152, 219, 0.25);
+    
+    /* Brighter border on hover */
+    -fx-border-color: rgba(52, 152, 219, 0.5);
+    
+    /* Scale up slightly */
+    -fx-scale-x: 1.03;
+    -fx-scale-y: 1.03;
+    
+    /* Enhanced shadow */
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.3), 12, 0, 0, 5);
+    
+    /* Glow effect on text */
+    -fx-text-fill: #ecf0f1;
+    -fx-font-size: 14.5px;
+}
+
+/* Pressed state */
+.sidebar-button:pressed {
+    -fx-background-color: rgba(41, 128, 185, 0.35);
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 5, 0, 0, 2);
+}
+
+/* ImageView styling for buttons - white icons */
+.sidebar-button .image-view {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 1);
+}
+
+/* Hover effect for icons */
+.sidebar-button:hover .image-view {
+    -fx-effect: dropshadow(gaussian, rgba(52, 152, 219, 0.6), 6, 0, 0, 2);
+    -fx-scale-x: 1.1;
+    -fx-scale-y: 1.1;
+}
+
+/* Specific hover colors for different buttons (optional) */
+#dashboardBtn:hover {
+    -fx-background-color: rgba(46, 204, 113, 0.25);
+    -fx-border-color: rgba(46, 204, 113, 0.5);
+}
+
+#carsBtn:hover {
+    -fx-background-color: rgba(52, 152, 219, 0.25);
+    -fx-border-color: rgba(52, 152, 219, 0.5);
+}
+
+#customersBtn:hover {
+    -fx-background-color: rgba(155, 89, 182, 0.25);
+    -fx-border-color: rgba(155, 89, 182, 0.5);
+}
+
+#employeesBtn:hover {
+    -fx-background-color: rgba(243, 156, 18, 0.25);
+    -fx-border-color: rgba(243, 156, 18, 0.5);
+}
+
+#rentCarBtn:hover {
+    -fx-background-color: rgba(231, 76, 60, 0.25);
+    -fx-border-color: rgba(231, 76, 60, 0.5);
+}
+
+#returnCarBtn:hover {
+    -fx-background-color: rgba(26, 188, 156, 0.25);
+    -fx-border-color: rgba(26, 188, 156, 0.5);
+}
+
+/* Logout button - transparent style */
+.login-button {
+    /* Transparent background */
+    -fx-background-color: rgba(231, 76, 60, 0.2);
+    
+    /* Glass effect */
+    -fx-background-radius: 5;
+    -fx-border-radius: 5;
+    -fx-border-color: rgba(231, 76, 60, 0.3);
+    -fx-border-width: 1.5;
+    
+    /* Text */
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    
+    /* Layout */
+    -fx-padding: 10 15 10 15;
+    -fx-content-display: left;
+    -fx-graphic-text-gap: 15px;
+    -fx-alignment: center-left;
+    
+    /* Interactive */
+    -fx-cursor: hand;
+    
+    /* Shadow */
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 3);
+}
+
+/* Logout button hover */
+.login-button:hover {
+    -fx-background-color: rgba(231, 76, 60, 0.35);
+    -fx-border-color: rgba(231, 76, 60, 0.6);
+    -fx-scale-x: 1.02;
+    -fx-scale-y: 1.02;
+    -fx-effect: dropshadow(gaussian, rgba(231, 76, 60, 0.3), 12, 0, 0, 5);
+}
+
+/* Logout button pressed */
+.login-button:pressed {
+    -fx-background-color: rgba(192, 57, 43, 0.35);
+    -fx-scale-x: 0.98;
+    -fx-scale-y: 0.98;
+}
+
+/* Logout button icon */
+.login-button .image-view {
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.3), 4, 0, 0, 1);
+}
+
+/* Separator styling */
+.separator {
+    -fx-padding: 10 0;
+}
+
+.separator .line {
+    -fx-border-color: rgba(255, 255, 255, 0.2);
+    -fx-border-width: 1;
+}

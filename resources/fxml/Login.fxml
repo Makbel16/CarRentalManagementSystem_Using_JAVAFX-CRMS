@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+<?import javafx.geometry.Insets?>
+<BorderPane xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.LoginController"
+            stylesheets="@../css/style.css">
+
+
+
+
+
+    <center>
+        <VBox alignment="CENTER" spacing="20.0" styleClass="login-container">
+            <padding>
+                <Insets bottom="40.0" left="40.0" right="40.0" top="40.0"/>
+            </padding>
+
+            <Label text="Car Rental Management System" styleClass="login-title">
+                <font>
+                    <Font name="System Bold" size="28.0"/>
+                </font>
+            </Label>
+
+            <VBox spacing="15.0" styleClass="login-form">
+                <Label text="Username"/>
+                <TextField fx:id="usernameField" promptText="Enter username"/>
+
+                <Label text="Password"/>
+                <PasswordField fx:id="passwordField" promptText="Enter password"/>
+
+                <Label fx:id="errorLabel" styleClass="error-label"/>
+
+                <Button text="Login" onAction="#handleLogin" styleClass="login-button"/>
+            </VBox>
+        </VBox>
+    </center>
+</BorderPane>

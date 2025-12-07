@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane fitToWidth="true"
+            xmlns="http://javafx.com/javafx"
+            xmlns:fx="http://javafx.com/fxml"
+            fx:controller="controllers.customers.CustomerMainController"
+            stylesheets="@../../css/style.css">
+   
+   <content>
+      <VBox spacing="20.0" styleClass="main-container" 
+            style="-fx-background-image: url('images/customer-background.jpg');
+                   -fx-background-size: cover;
+                   -fx-background-position: center;
+                   -fx-background-repeat: no-repeat;">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         
+         <!-- Centered Page Title -->
+         <Label text="Customer Management" alignment="CENTER" maxWidth="Infinity"
+                style="-fx-text-fill: white; 
+                       -fx-font-size: 28px;
+                       -fx-font-weight: bold;
+                       -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 4, 0, 0, 2);
+                       -fx-padding: 0 0 20 0;">
+            <font>
+               <Font name="System Bold" size="28.0" />
+            </font>
+         </Label>
+         
+         <!-- Buttons Row with Images -->
+         <HBox spacing="20" alignment="CENTER">
+            <!-- Add Customer Button -->
+            <Button id="addCustomerBtn"
+                    text="➕ Add Customer" 
+                    onAction="#loadAddCustomer" 
+                    styleClass="customer-icon-button" 
+                    minWidth="180"
+                    minHeight="160" />
+            
+            <!-- Delete Customer Button -->
+            <Button id="deleteCustomerBtn"
+                    text="🗑️ Delete Customer" 
+                    onAction="#loadDeleteCustomer" 
+                    styleClass="customer-icon-button" 
+                    minWidth="180"
+                    minHeight="160" />
+            
+            <!-- Edit Customer Button -->
+            <Button id="editCustomerBtn"
+                    text="✏️ Edit Customer" 
+                    onAction="#loadEditCustomer" 
+                    styleClass="customer-icon-button" 
+                    minWidth="180"
+                    minHeight="160" />
+            
+            <!-- Search Customer Button -->
+            <Button id="searchCustomerBtn"
+                    text="🔍 Search Customer" 
+                    onAction="#loadSearchCustomer" 
+                    styleClass="customer-icon-button" 
+                    minWidth="180"
+                    minHeight="160" />
+            
+            <!-- View All Customers Button -->
+            <Button id="viewCustomersBtn"
+                    text="👥 View Customers" 
+                    onAction="#loadDisplayCustomers" 
+                    styleClass="customer-icon-button" 
+                    minWidth="180"
+                    minHeight="160" />
+         </HBox>
+         
+         <!-- Content Pane -->
+         <StackPane fx:id="contentPane" VBox.vgrow="ALWAYS" style="-fx-padding: 20 0 0 0;">
+            <!-- Content will be loaded here -->
+         </StackPane>
+      </VBox>
+   </content>
+</ScrollPane>

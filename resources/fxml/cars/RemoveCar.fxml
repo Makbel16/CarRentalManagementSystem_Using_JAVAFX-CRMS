@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/8.0.171" 
+           xmlns:fx="http://javafx.com/fxml/1" 
+           fx:controller="controllers.cars.RemoveCarController" 
+           fitToWidth="true"
+           stylesheets="@../../../css/style.css">
+   <content>
+      <VBox spacing="15.0" styleClass="form-container">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         
+         <Label text="Remove Car" styleClass="page-title">
+            <font>
+               <Font name="System Bold" size="20.0" />
+            </font>
+         </Label>
+         
+         <GridPane hgap="15.0" vgap="15.0">
+            <columnConstraints>
+               <ColumnConstraints minWidth="150.0" />
+               <ColumnConstraints hgrow="ALWAYS" minWidth="250.0" />
+            </columnConstraints>
+            
+            <!-- Row 0: Search Field -->
+            <Label text="Car ID:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <HBox spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+               <TextField fx:id="carIdField" HBox.hgrow="ALWAYS" onAction="#handleSearchCar" />
+               <Button text="Search" onAction="#handleSearchCar" styleClass="primary-button" />
+            </HBox>
+            
+            <!-- Row 1: Car Details -->
+            <VBox spacing="10.0" GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1">
+               <Label text="Car Details:" style="-fx-font-weight: bold;" />
+               <Label fx:id="carDetailsText" styleClass="message-label" wrapText="true" 
+                      style="-fx-padding: 10; -fx-background-color: #f8f9fa; -fx-border-color: #dee2e6; -fx-border-width: 1;" />
+               <Label fx:id="confirmationText" style="-fx-text-fill: #e74c3c;" wrapText="true" />
+            </VBox>
+            
+            <!-- Row 2: Buttons -->
+            <HBox spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <Button text="Remove Car" fx:id="removeButton" onAction="#handleRemoveCar" 
+                       styleClass="danger-button" />
+               <Button text="Back" onAction="#handleBack" styleClass="secondary-button" />
+            </HBox>
+         </GridPane>
+      </VBox>
+   </content>
+</ScrollPane>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane fitToWidth="true"
+            xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="controllers.rent.RentCarController"
+            stylesheets="@../../css/style.css">
+   <content>
+      <VBox spacing="15.0" styleClass="form-container">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         
+         <Label text="Rent a Car" styleClass="page-title">
+            <font>
+               <Font name="System Bold" size="20.0" />
+            </font>
+         </Label>
+    <GridPane hgap="10" vgap="10">
+        <!-- Customer Information -->
+        <Label text="Customer Information" style="-fx-font-weight: bold;" GridPane.columnSpan="2" GridPane.rowIndex="0"/>
+        
+        <Label text="Customer ID:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="1" spacing="5">
+            <TextField fx:id="customerIdField" promptText="Enter Customer ID"/>
+            <Button text="Search" onAction="#searchCustomer" styleClass="primary-button"/>
+        </HBox>
+        
+        <Label text="Customer Name:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <Label fx:id="customerNameLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        
+        <!-- Car Information -->
+        <Label text="Car Information" style="-fx-font-weight: bold;" GridPane.columnSpan="2" GridPane.rowIndex="3"/>
+        
+        <Label text="Car ID:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="4" spacing="5">
+            <TextField fx:id="carIdField" promptText="Enter Car ID"/>
+            <Button text="Search" onAction="#searchCar" styleClass="primary-button"/>
+        </HBox>
+        
+        <Label text="Car Details:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <Label fx:id="carDetailsLabel" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        
+        <!-- Rental Information -->
+        <Label text="Rental Details" style="-fx-font-weight: bold;" GridPane.columnSpan="2" GridPane.rowIndex="6"/>
+        
+        <Label text="Rental Date:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+        <DatePicker fx:id="rentalDateField" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+        
+        <Label text="Return Date:" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+        <DatePicker fx:id="returnDateField" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+        
+        <Label text="Daily Rate:" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+        <Label fx:id="dailyRateLabel" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
+        
+        <Label text="Total Cost:" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
+        <Label fx:id="totalCostLabel" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
+    </GridPane>
+    
+    <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
+            <Button text="Calculate Total" onAction="#calculateTotal" styleClass="primary-button"/>
+            <Button text="Rent Car" onAction="#handleRent" styleClass="primary-button"/>
+            <Button text="Cancel" onAction="#handleCancel" styleClass="secondary-button"/>
+         </HBox>
+      </VBox>
+   </content>
+</ScrollPane>

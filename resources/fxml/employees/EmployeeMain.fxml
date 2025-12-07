@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/11.0.1" 
+            xmlns:fx="http://javafx.com/fxml/1" 
+            fx:controller="controllers.employees.EmployeeMainController" 
+            fitToWidth="true" 
+            stylesheets="@../../css/style.css">
+
+   <content>
+      <VBox spacing="20.0" styleClass="main-container"
+            style="-fx-background-image: url('images/employee-background.jpg');
+                   -fx-background-size: cover;
+                   -fx-background-position: center;
+                   -fx-background-repeat: no-repeat;">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         
+         <!-- Centered White Page Title -->
+         <Label text="Employee Management" alignment="CENTER" maxWidth="Infinity"
+                style="-fx-text-fill: white; 
+                       -fx-font-size: 28px;
+                       -fx-font-weight: bold;
+                       -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 4, 0, 0, 2);
+                       -fx-padding: 0 0 20 0;">
+            <font>
+               <Font name="System Bold" size="28.0" />
+            </font>
+         </Label>
+         
+         <HBox spacing="20" alignment="CENTER">
+            <!-- Add Employee Button -->
+            <Button id="addEmployeeBtn"
+                    text="➕ Add Employee" 
+                    onAction="#loadAddEmployee" 
+                    styleClass="icon-card-button" 
+                    minWidth="180"
+                    minHeight="160" />
+            
+            <!-- Delete Employee Button -->
+            <Button id="deleteEmployeeBtn"
+                    text="🗑️ Delete Employee" 
+                    onAction="#loadDeleteEmployee" 
+                    styleClass="icon-card-button" 
+                    minWidth="180"
+                    minHeight="160" />
+            
+            <!-- Edit Employee Button -->
+            <Button id="editEmployeeBtn"
+                    text="✏️ Edit Employee" 
+                    onAction="#loadEditEmployee" 
+                    styleClass="icon-card-button" 
+                    minWidth="180"
+                    minHeight="160" />
+            
+            <!-- Search Employee Button -->
+            <Button id="searchEmployeeBtn"
+                    text="🔍 Search Employee" 
+                    onAction="#loadSearchEmployee" 
+                    styleClass="icon-card-button" 
+                    minWidth="180"
+                    minHeight="160" />
+            
+            <!-- Display Employees Button -->
+            <Button id="displayEmployeeBtn"
+                    text="📋 Display Employees" 
+                    onAction="#loadDisplayEmployees" 
+                    styleClass="icon-card-button" 
+                    minWidth="180"
+                    minHeight="160" />
+         </HBox>
+         
+         <StackPane fx:id="contentPane" VBox.vgrow="ALWAYS" style="-fx-padding: 20 0 0 0;">
+            <!-- Content will be loaded here -->
+         </StackPane>
+      </VBox>
+   </content>
+</ScrollPane>

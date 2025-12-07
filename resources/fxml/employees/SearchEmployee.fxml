@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.cell.PropertyValueFactory?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.employees.SearchEmployeeController"
+      spacing="10" style="-fx-padding: 20;">
+    <Label text="Search Employees" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    
+    <HBox spacing="10">
+        <ComboBox fx:id="searchTypeCombo" prefWidth="150" promptText="Search by..."/>
+        <TextField fx:id="searchField" promptText="Search term" onAction="#handleSearch"/>
+        <Button text="Search" onAction="#handleSearch"/>
+      
+    </HBox>
+    
+    <TableView fx:id="resultsTable" style="-fx-padding: 10 0 0 0;">
+        <columns>
+            <TableColumn text="ID" fx:id="idColumn">
+                <cellValueFactory>
+                    <PropertyValueFactory property="employeeId" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Name" fx:id="nameColumn">
+                <cellValueFactory>
+                    <PropertyValueFactory property="fullName" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Position" fx:id="positionColumn">
+                <cellValueFactory>
+                    <PropertyValueFactory property="position" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Department" fx:id="departmentColumn">
+                <cellValueFactory>
+                    <PropertyValueFactory property="department" />
+                </cellValueFactory>
+            </TableColumn>
+            <TableColumn text="Actions" fx:id="actionsColumn"/>
+        </columns>
+    </TableView>
+    
+    <Label fx:id="messageLabel" style="-fx-text-fill: red;"/>
+</VBox>

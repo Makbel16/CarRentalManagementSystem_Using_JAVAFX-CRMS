@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.geometry.Insets?>
+
+<ScrollPane xmlns="http://javafx.com/javafx/11.0.1" 
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="controllers.cars.EditCarController"
+           fitToWidth="true"
+           stylesheets="/css/style.css">
+   <content>
+      <VBox spacing="15.0" styleClass="form-container">
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         
+         <Label text="Edit Car Information" styleClass="page-title">
+            <font>
+               <Font name="System Bold" size="20.0" />
+            </font>
+         </Label>
+         
+         <GridPane hgap="15.0" vgap="15.0">
+            <columnConstraints>
+               <ColumnConstraints minWidth="150.0" />
+               <ColumnConstraints hgrow="ALWAYS" minWidth="250.0" />
+            </columnConstraints>
+            
+            <Label text="Search Car (ID or Registration):" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <HBox spacing="10.0" GridPane.columnIndex="1" GridPane.rowIndex="0">
+               <TextField fx:id="searchField" HBox.hgrow="ALWAYS" />
+               <Button text="Search" fx:id="searchButton" onAction="#handleSearch" styleClass="primary-button" />
+            </HBox>
+            
+            <Separator GridPane.columnIndex="0" GridPane.columnSpan="2" GridPane.rowIndex="1" />
+            
+            <Label text="Car ID:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="carIdField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            
+            <Label text="Brand:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="brandField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            
+            <Label text="Model:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <TextField fx:id="modelField" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            
+            <Label text="Year:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+            <TextField fx:id="yearField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+            
+            <Label text="Color:" GridPane.columnIndex="0" GridPane.rowIndex="6" />
+            <TextField fx:id="colorField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            
+            <Label text="Registration Number:" GridPane.columnIndex="0" GridPane.rowIndex="7" />
+            <TextField fx:id="registrationField" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+            
+            <Label text="Price Per Day:" GridPane.columnIndex="0" GridPane.rowIndex="8" />
+            <TextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+            
+            <Label text="Mileage:" GridPane.columnIndex="0" GridPane.rowIndex="9" />
+            <TextField fx:id="mileageField" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+            
+            <Label text="Fuel Type:" GridPane.columnIndex="0" GridPane.rowIndex="10" />
+            <ComboBox fx:id="fuelTypeCombo" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+            
+            <Label text="Availability:" GridPane.columnIndex="0" GridPane.rowIndex="11" />
+            <ComboBox fx:id="availabilityCombo" GridPane.columnIndex="1" GridPane.rowIndex="11" />
+         </GridPane>
+         
+         <HBox spacing="10.0">
+            <Button text="Update Car" onAction="#handleUpdateCar" styleClass="primary-button" />
+            <Button text="Cancel" onAction="#handleCancel" styleClass="secondary-button" />
+         </HBox>
+      </VBox>
+   </content>
+</ScrollPane>

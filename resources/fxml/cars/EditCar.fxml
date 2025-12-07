@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+
+<AnchorPane prefHeight="650.0" prefWidth="900.0" style="-fx-padding: 20;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.cars.EditCarController">
+
+    <VBox spacing="20" AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20" AnchorPane.topAnchor="20">
+        
+        <!-- Title -->
+        <Label style="-fx-font-size: 28px; -fx-font-weight: bold;" text="Edit Car" textFill="WHITE">
+            <padding>
+                <Insets bottom="10" />
+            </padding>
+        </Label>
+        
+        <!-- Search Section -->
+        <VBox spacing="10">
+            <Label style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Search Car:" textFill="WHITE" />
+            <HBox spacing="10">
+                <TextField fx:id="searchField" prefWidth="300" promptText="Enter Car ID or Registration Number" />
+                <Button fx:id="searchButton" onAction="#handleSearch" style="-fx-font-size: 14px; -fx-pref-width: 100px;" text="Search" />
+            </HBox>
+        </VBox>
+        
+        <!-- Separator -->
+        <Separator prefWidth="800" />
+        
+        <!-- Car Details Form -->
+        <Label style="-fx-font-size: 18px; -fx-font-weight: bold;" text="Car Details:" textFill="WHITE" />
+        
+        <GridPane hgap="15" vgap="15">
+            <padding><Insets bottom="20" /></padding>
+            
+            <columnConstraints>
+                <ColumnConstraints halignment="RIGHT" prefWidth="200" />
+                <ColumnConstraints prefWidth="300" />
+                <ColumnConstraints halignment="RIGHT" prefWidth="200" />
+                <ColumnConstraints prefWidth="300" />
+            </columnConstraints>
+            
+            <!-- Row 0: Car ID -->
+            <Label text="Car ID:" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+            <TextField fx:id="carIdField" editable="false" style="-fx-background-color: #f0f0f0;" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+            
+            <!-- Row 0: Brand -->
+            <Label text="Brand*:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+            <TextField fx:id="brandField" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+            
+            <!-- Row 1: Model -->
+            <Label text="Model*:" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+            <TextField fx:id="modelField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+            
+            <!-- Row 1: Year -->
+            <Label text="Year*:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+            <TextField fx:id="yearField" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+            
+            <!-- Row 2: Color -->
+            <Label text="Color:" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+            <TextField fx:id="colorField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+            
+            <!-- Row 2: Registration Number -->
+            <Label text="Registration No.*:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+            <TextField fx:id="registrationField" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+            
+            <!-- Row 3: Price per Day -->
+            <Label text="Price per Day ($)*:" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+            <TextField fx:id="priceField" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+            
+            <!-- Row 3: Mileage -->
+            <Label text="Mileage:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+            <TextField fx:id="mileageField" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+            
+            <!-- Row 4: Fuel Type -->
+            <Label text="Fuel Type:" textFill="WHITE" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+            <ComboBox fx:id="fuelTypeCombo" prefWidth="300" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            
+            <!-- Row 4: Availability -->
+            <Label text="Availability:" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="4" />
+            <ComboBox fx:id="availabilityCombo" prefWidth="300" GridPane.columnIndex="3" GridPane.rowIndex="4" />
+         <rowConstraints>
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+            <RowConstraints />
+         </rowConstraints>
+        </GridPane>
+        
+        <!-- Required field note -->
+        <Label style="-fx-font-size: 12px; -fx-text-fill: #666;" text="* Required fields" textFill="WHITE" />
+        
+        <!-- Action Buttons -->
+        <HBox alignment="CENTER" spacing="20">
+            <Button onAction="#handleUpdateCar" style="-fx-font-size: 16px; -fx-pref-width: 150px; -fx-pref-height: 40px;                          -fx-background-color: #4CAF50; -fx-text-fill: white;" text="Update Car" />
+            <Button onAction="#handleCancel" style="-fx-font-size: 16px; -fx-pref-width: 150px; -fx-pref-height: 40px;                          -fx-background-color: #f44336; -fx-text-fill: white;" text="Cancel" />
+        </HBox>
+        
+    </VBox>
+
+</AnchorPane>

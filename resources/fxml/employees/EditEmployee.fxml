@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controllers.employees.EditEmployeeController"
+      spacing="10" style="-fx-padding: 20;">
+    <Label text="Edit Employee" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
+    
+    <GridPane hgap="10" vgap="10">
+        <Label text="Employee ID:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="employeeIdField" editable="false" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+        
+        <Label text="First Name:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="firstNameField" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+        
+        <Label text="Last Name:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField fx:id="lastNameField" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+        
+        <Label text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <TextField fx:id="emailField" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+        
+        <Label text="Phone:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+        <TextField fx:id="phoneField" GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+        
+        <Label text="Position:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+        <ComboBox fx:id="positionCombo" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+        
+        <Label text="Hire Date:" GridPane.columnIndex="0" GridPane.rowIndex="6"/>
+        <DatePicker fx:id="hireDatePicker" GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+        
+        <Label text="Salary:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
+        <TextField fx:id="salaryField" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
+        
+        <Label text="Status:" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
+        <ComboBox fx:id="statusCombo" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
+        
+        <Label text="Address:" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
+        <TextArea fx:id="addressField" GridPane.columnIndex="1" GridPane.rowIndex="9" wrapText="true"/>
+        
+        <Label text="Search Employee:" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
+        <HBox GridPane.columnIndex="1" GridPane.rowIndex="10" spacing="5">
+            <TextField fx:id="searchField" promptText="Enter ID or name"/>
+            <Button text="Search" onAction="#handleSearch"/>
+        </HBox>
+    </GridPane>
+    
+    <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
+        <Button text="Update" onAction="#handleUpdate" styleClass="primary-button"/>
+        <Button text="Cancel" onAction="#handleCancel" styleClass="secondary-button"/>
+    </HBox>
+    
+    <Label fx:id="messageLabel" style="-fx-text-fill: red; -fx-padding: 10 0 0 0;"/>
+</VBox>
