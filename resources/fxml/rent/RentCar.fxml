@@ -1,74 +1,141 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<ScrollPane fitToWidth="true"
-            xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="controllers.rent.RentCarController"
-            stylesheets="@../../css/style.css">
+<ScrollPane fitToWidth="true" fitToHeight="true" prefHeight="600.0" prefWidth="900.0" stylesheets="@../../css/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.rent.RentCarController">
    <content>
-      <VBox spacing="15.0" styleClass="form-container">
-         <padding>
-            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-         </padding>
+      <HBox spacing="30" prefHeight="580.0" prefWidth="1200.0" style="-fx-padding: 20;">
+         <!-- Left side: Form Container -->
+         <VBox prefHeight="580.0" prefWidth="650.0" spacing="15.0" styleClass="form-container">
+            <padding>
+               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+            </padding>
+            
+            <Label styleClass="page-title" text="Rent a Car">
+               <font>
+                  <Font name="System Bold" size="20.0" />
+               </font>
+            </Label>
+            
+            <GridPane hgap="10" prefHeight="371.0" prefWidth="600.0" vgap="10">
+               <!-- Customer Information -->
+               <Label style="-fx-font-weight: bold;" text="Customer Information" GridPane.columnSpan="2" />
+               
+               <Label text="Customer ID:" GridPane.rowIndex="1" />
+               <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  <TextField fx:id="customerIdField" promptText="Enter Customer ID" prefWidth="200" />
+                  <Button onAction="#searchCustomer" prefHeight="34.0" prefWidth="83.0" styleClass="primary-button" text="Search" />
+               </HBox>
+               
+               <Label text="Customer Name:" GridPane.rowIndex="2" />
+               <Label fx:id="customerNameLabel" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+               
+               <!-- Car Information -->
+               <Label style="-fx-font-weight: bold;" text="Car Information" GridPane.columnSpan="2" GridPane.rowIndex="3" />
+               
+               <Label text="Car ID:" GridPane.rowIndex="4" />
+               <HBox spacing="5" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                  <TextField fx:id="carIdField" promptText="Enter Car ID" prefWidth="200" />
+                  <Button onAction="#searchCar" prefHeight="34.0" prefWidth="83.0" styleClass="primary-button" text="Search" />
+               </HBox>
+               
+               <Label text="Car Details:" GridPane.rowIndex="5" />
+               <Label fx:id="carDetailsLabel" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+               
+               <!-- Rental Information -->
+               <Label style="-fx-font-weight: bold;" text="Rental Details" GridPane.columnSpan="2" GridPane.rowIndex="6" />
+               
+               <Label text="Rental Date:" GridPane.rowIndex="7" />
+               <DatePicker fx:id="rentalDateField" prefHeight="37.0" prefWidth="289.0" GridPane.columnIndex="1" GridPane.rowIndex="7" />
+               
+               <Label text="Return Date:" GridPane.rowIndex="8" />
+               <DatePicker fx:id="returnDateField" prefWidth="287.0" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+               
+               <Label text="Daily Rate:" GridPane.rowIndex="9" />
+               <Label fx:id="dailyRateLabel" GridPane.columnIndex="1" GridPane.rowIndex="9" />
+               
+               <Label text="Total Cost:" GridPane.rowIndex="10" />
+               <Label fx:id="totalCostLabel" style="-fx-font-weight: bold; -fx-text-fill: #2e7d32; -fx-font-size: 16px;" GridPane.columnIndex="1" GridPane.rowIndex="10" />
+               
+               <columnConstraints>
+                  <ColumnConstraints hgrow="NEVER" />
+                  <ColumnConstraints hgrow="ALWAYS" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+                  <RowConstraints />
+               </rowConstraints>
+            </GridPane>
+            
+            <HBox spacing="10" style="-fx-padding: 20 0 0 0;">
+               <Button onAction="#calculateTotal" styleClass="primary-button" text="Calculate Total" />
+               <Button onAction="#handleRent" prefHeight="34.0" prefWidth="118.0" styleClass="primary-button" text="Rent Car" />
+               <Button onAction="#handleCancel" prefHeight="34.0" prefWidth="139.0" styleClass="secondary-button" text="Cancel" />
+            </HBox>
+         </VBox>
          
-         <Label text="Rent a Car" styleClass="page-title">
-            <font>
-               <Font name="System Bold" size="20.0" />
-            </font>
-         </Label>
-    <GridPane hgap="10" vgap="10">
-        <!-- Customer Information -->
-        <Label text="Customer Information" style="-fx-font-weight: bold;" GridPane.columnSpan="2" GridPane.rowIndex="0"/>
-        
-        <Label text="Customer ID:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
-        <HBox GridPane.columnIndex="1" GridPane.rowIndex="1" spacing="5">
-            <TextField fx:id="customerIdField" promptText="Enter Customer ID"/>
-            <Button text="Search" onAction="#searchCustomer" styleClass="primary-button"/>
-        </HBox>
-        
-        <Label text="Customer Name:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
-        <Label fx:id="customerNameLabel" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
-        
-        <!-- Car Information -->
-        <Label text="Car Information" style="-fx-font-weight: bold;" GridPane.columnSpan="2" GridPane.rowIndex="3"/>
-        
-        <Label text="Car ID:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
-        <HBox GridPane.columnIndex="1" GridPane.rowIndex="4" spacing="5">
-            <TextField fx:id="carIdField" promptText="Enter Car ID"/>
-            <Button text="Search" onAction="#searchCar" styleClass="primary-button"/>
-        </HBox>
-        
-        <Label text="Car Details:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
-        <Label fx:id="carDetailsLabel" GridPane.columnIndex="1" GridPane.rowIndex="5"/>
-        
-        <!-- Rental Information -->
-        <Label text="Rental Details" style="-fx-font-weight: bold;" GridPane.columnSpan="2" GridPane.rowIndex="6"/>
-        
-        <Label text="Rental Date:" GridPane.columnIndex="0" GridPane.rowIndex="7"/>
-        <DatePicker fx:id="rentalDateField" GridPane.columnIndex="1" GridPane.rowIndex="7"/>
-        
-        <Label text="Return Date:" GridPane.columnIndex="0" GridPane.rowIndex="8"/>
-        <DatePicker fx:id="returnDateField" GridPane.columnIndex="1" GridPane.rowIndex="8"/>
-        
-        <Label text="Daily Rate:" GridPane.columnIndex="0" GridPane.rowIndex="9"/>
-        <Label fx:id="dailyRateLabel" GridPane.columnIndex="1" GridPane.rowIndex="9"/>
-        
-        <Label text="Total Cost:" GridPane.columnIndex="0" GridPane.rowIndex="10"/>
-        <Label fx:id="totalCostLabel" style="-fx-font-weight: bold;" GridPane.columnIndex="1" GridPane.rowIndex="10"/>
-    </GridPane>
-    
-    <HBox spacing="10" style="-fx-padding: 10 0 0 0;">
-            <Button text="Calculate Total" onAction="#calculateTotal" styleClass="primary-button"/>
-            <Button text="Rent Car" onAction="#handleRent" styleClass="primary-button"/>
-            <Button text="Cancel" onAction="#handleCancel" styleClass="secondary-button"/>
-         </HBox>
-      </VBox>
+         <!-- Right side: Animated Image/Visualization -->
+         <VBox alignment="CENTER" spacing="20" prefWidth="400" style="-fx-padding: 30 20 30 20; -fx-background-color: linear-gradient(to bottom, #f5f7fa, #c3cfe2); -fx-background-radius: 10;">
+            <!-- Animated Car Image -->
+            <VBox alignment="CENTER" spacing="15">
+               <Label text="🚗 Available Now" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1976d2;" />
+               
+               <ImageView fx:id="animatedCarView" fitHeight="250" fitWidth="350" preserveRatio="true" pickOnBounds="true">
+                  <!-- Animated GIF will be loaded from controller -->
+                  <Image url="@../../images/car-animation.png" /> 
+               </ImageView>
+               
+               <!-- Status Indicator (Animated) -->
+               <VBox alignment="CENTER" spacing="5">
+                  <HBox alignment="CENTER" spacing="10">
+                     <Label style="-fx-font-size: 16px; -fx-font-weight: bold; -fx-text-fill: #388e3c;" 
+                            text="✓ Ready for Rental">
+                        <padding>
+                           <Insets left="5" />
+                        </padding>
+                     </Label>
+                  </HBox>
+               </VBox>
+            </VBox>
+            
+				            <!-- Rental Process Info -->
+				<VBox spacing="10" style="-fx-padding: 20; -fx-background-color: white; -fx-background-radius: 8;">
+				    <Label text="Quick Rental Process:" style="-fx-font-weight: bold; -fx-font-size: 16px;" />
+				    <Label text="1. Find Customer ID" style="-fx-text-fill: #666;" />
+				    <Label text="2. Select Available Car" style="-fx-text-fill: #666;" />
+				    <Label text="3. Choose Dates" style="-fx-text-fill: #666;" />
+				    <Label text="4. Calculate &amp; Confirm" style="-fx-text-fill: #666;" />
+				</VBox>
+            
+            <!-- Available Cars Count (Dynamic) -->
+            <HBox alignment="CENTER" spacing="10" style="-fx-padding: 10; -fx-background-color: #e8f5e8; -fx-background-radius: 8;">
+               <Label text="🌟" style="-fx-font-size: 20px;" />
+               <Label fx:id="availableCarsLabel" text="Multiple cars available" 
+                      style="-fx-font-size: 14px; -fx-text-fill: #2e7d32;" />
+            </HBox>
+         </VBox>
+      </HBox>
    </content>
 </ScrollPane>

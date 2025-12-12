@@ -9,8 +9,14 @@ import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.StackPane;
 import models.Car;
+import models.RentalRecord;
 import services.CarService;
+import services.RentService;
 import controllers.utils.Alerts;
+import javafx.beans.property.SimpleStringProperty;
+import java.util.HashSet;
+import java.util.Set;
+import java.util.List;
 
 public class DisplayCarsController {
     @FXML private TableView<Car> carsTable;
@@ -25,12 +31,16 @@ public class DisplayCarsController {
     @FXML private Button deleteButton;
     
     private CarService carService;
+    private RentService rentService;
     private ObservableList<Car> carsList;
+    private Set<Integer> activeRentedCarIds;
     
     @FXML
     public void initialize() {
         carService = new CarService();
+        rentService = new RentService();
         carsList = FXCollections.observableArrayList();
+        activeRentedCarIds = new HashSet<>();
         
         // Set up table columns
         idColumn.setCellValueFactory(new PropertyValueFactory<>("carId"));
@@ -39,7 +49,19 @@ public class DisplayCarsController {
         yearColumn.setCellValueFactory(new PropertyValueFactory<>("year"));
         colorColumn.setCellValueFactory(new PropertyValueFactory<>("color"));
         pricePerDayColumn.setCellValueFactory(new PropertyValueFactory<>("pricePerDay"));
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("availability"));
+        statusColumn.setCellValueFactory(cellData -> {
+            Car car = cellData.getValue();
+            if (car == null) {
+                return new SimpleStringProperty("");
+            }
+            String value;
+            if (activeRentedCarIds != null && activeRentedCarIds.contains(car.getCarId())) {
+                value = "Rented";
+            } else {
+                value = car.getAvailability() != null ? car.getAvailability() : "Unknown";
+            }
+            return new SimpleStringProperty(value);
+        });
         
         // Format price column
         pricePerDayColumn.setCellFactory(column -> new TableCell<Car, Double>() {
@@ -134,8 +156,24 @@ public class DisplayCarsController {
     }
     
     private void loadCars() {
+        refreshActiveRentedCarIds();
         carsList.clear();
         carsList.addAll(carService.getAllCars());
+    }
+    
+    private void refreshActiveRentedCarIds() {
+        if (activeRentedCarIds == null) {
+            activeRentedCarIds = new HashSet<>();
+        }
+        activeRentedCarIds.clear();
+        try {
+            List<RentalRecord> activeRentals = rentService.getActiveRentalRecords();
+            for (RentalRecord rental : activeRentals) {
+                activeRentedCarIds.add(rental.getCarId());
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
 

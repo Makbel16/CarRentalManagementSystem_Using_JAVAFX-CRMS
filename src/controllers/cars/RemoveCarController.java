@@ -6,9 +6,15 @@ import javafx.scene.Parent;
 import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import models.Car;
+import models.Customer;
+import models.RentalRecord;
 import services.CarService;
+import services.RentService;
+import services.CustomerService;
+import controllers.utils.SessionManager;
 import controllers.utils.Alerts;
 import controllers.utils.Validator;
+import java.util.List;
 
 public class RemoveCarController {
     @FXML private TextField carIdField;
@@ -17,12 +23,16 @@ public class RemoveCarController {
     @FXML private Label confirmationText;
     
     private CarService carService;
+    private RentService rentService;
+    private CustomerService customerService;
     private Car selectedCar;
     
     @FXML
     public void initialize() {
         try {
             carService = new CarService();
+            rentService = new RentService();
+            customerService = new CustomerService();
             removeButton.setDisable(true);
             // Set initial empty text to prevent NPE
             carDetailsText.setText("");
@@ -78,6 +88,43 @@ public class RemoveCarController {
                 return;
             }
             
+            // Check user permission
+            if (!SessionManager.getInstance().canDelete()) {
+                Alerts.showError(
+                    "Access Denied",
+                    "You do not have permission to delete cars.\n\n" +
+                    "Only Admins and Managers can delete records.\n" +
+                    "Your current role: " + SessionManager.getInstance().getCurrentUserRole().getDisplayName()
+                );
+                return;
+            }
+            
+            // Check if the car is currently rented
+            List<RentalRecord> activeRentals = rentService.getActiveRentalRecords();
+            RentalRecord activeRental = null;
+            for (RentalRecord rental : activeRentals) {
+                if (rental.getCarId() == selectedCar.getCarId()) {
+                    activeRental = rental;
+                    break;
+                }
+            }
+            
+            if (activeRental != null) {
+                // Get customer name
+                Customer customer = customerService.getCustomerById(activeRental.getCustomerId());
+                String customerName = customer != null ? customer.getFullName() : "Unknown Customer";
+                
+                Alerts.showError(
+                    "Cannot Delete Car",
+                    "This car is currently rented to \"" + customerName + "\".\n\n" +
+                    "Please process the return before deleting this car.\n\n" +
+                    "Rental ID: " + activeRental.getRentalId() + "\n" +
+                    "Rental Date: " + activeRental.getRentalDate() + "\n" +
+                    "Expected Return: " + activeRental.getReturnDate()
+                );
+                return;
+            }
+            
             if (Alerts.showConfirmation(
                     "Confirm Delete", 
                     "Are you sure you want to permanently delete this car?\n\n" +
@@ -88,7 +135,7 @@ public class RemoveCarController {
                     Alerts.showSuccess("Success", "Car deleted successfully");
                     clearFields();
                 } else {
-                    Alerts.showError("Error", "Failed to delete car. It may be currently rented.");
+                    Alerts.showError("Error", "Failed to delete car. Please try again.");
                 }
             }
         } catch (Exception e) {

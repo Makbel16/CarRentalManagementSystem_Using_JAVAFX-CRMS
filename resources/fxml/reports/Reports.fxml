@@ -1,0 +1,144 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="700.0" prefWidth="1000.0" spacing="10.0" stylesheets="@../../../css/style.css" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="controllers.reports.ReportsController">
+   <padding>
+      <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+   </padding>
+   
+   <!-- Header -->
+   <Label text="Reports Dashboard">
+      <font>
+         <Font name="System Bold" size="24.0" />
+      </font>
+   </Label>
+   
+   <!-- Report Selection Panel -->
+   <HBox alignment="CENTER_LEFT" spacing="15.0">
+      <Label text="Select Period:" />
+      <ComboBox fx:id="monthComboBox" prefWidth="150.0" promptText="Select Month" />
+      <ComboBox fx:id="yearComboBox" prefWidth="100.0" promptText="Select Year" />
+      <Button fx:id="generateReportButton" mnemonicParsing="false" styleClass="login-button" text="Generate Report" />
+      <Button mnemonicParsing="false" onAction="#handleExportToCSV" styleClass="sidebar-button" text="Export to CSV" />
+      <Button mnemonicParsing="false" onAction="#handlePrintReport" styleClass="sidebar-button" text="Print Report" />
+   </HBox>
+   
+   <!-- Main Content Tabs -->
+   <TabPane fx:id="reportTabPane" prefHeight="550.0" prefWidth="960.0" tabClosingPolicy="UNAVAILABLE" VBox.vgrow="ALWAYS">
+      
+      <!-- Monthly Summary Tab -->
+      <Tab text="Monthly Summary">
+         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <VBox spacing="15.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+               <padding>
+                  <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+               </padding>
+               
+               <!-- Period Header -->
+               <HBox alignment="CENTER">
+                  <Label fx:id="periodLabel" text="Select a period and generate report">
+                     <font>
+                        <Font name="System Bold" size="20.0" />
+                     </font>
+                  </Label>
+               </HBox>
+               
+               <!-- System Statistics -->
+               <Label fx:id="systemStatsLabel" text="System Statistics will appear here" />
+               
+               <!-- Revenue Metrics -->
+               <HBox spacing="30.0">
+                  <VBox spacing="10.0">
+                     <Label text="Total Revenue">
+                        <font>
+                           <Font name="System Bold" size="14.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="totalRevenueLabel" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #2e7d32;" text="0" />
+                  </VBox>
+                  
+                  <VBox spacing="10.0">
+                     <Label text="Total Rentals">
+                        <font>
+                           <Font name="System Bold" size="14.0" />
+                        </font>
+                     </Label>
+                     <Label fx:id="totalRentalsLabel" style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #1565c0;" text="0" />
+                  </VBox>
+               </HBox>
+               
+               <!-- Rental Status Breakdown -->
+               <Label text="Rental Status Breakdown">
+                  <font>
+                     <Font name="System Bold" size="16.0" />
+                  </font>
+               </Label>
+               
+               <HBox spacing="30.0">
+                  <VBox spacing="5.0">
+                     <Label text="Active Rentals" />
+                     <Label fx:id="activeRentalsLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="0" />
+                  </VBox>
+                  
+                  <VBox spacing="5.0">
+                     <Label text="Completed Rentals" />
+                     <Label fx:id="completedRentalsLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="0" />
+                  </VBox>
+                  
+                  <VBox spacing="5.0">
+                     <Label text="Returned Rentals" />
+                     <Label fx:id="returnedRentalsLabel" style="-fx-font-size: 18px; -fx-font-weight: bold;" text="0" />
+                  </VBox>
+               </HBox>
+            </VBox>
+         </AnchorPane>
+      </Tab>
+      
+      <!-- Car Utilization Tab -->
+      <Tab text="Car Utilization">
+         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <TableView fx:id="carReportTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn fx:id="carInfoColumn" prefWidth="200.0" text="Car" />
+                <TableColumn fx:id="registrationColumn" prefWidth="150.0" text="Registration" />
+                  <TableColumn fx:id="timesRentedColumn" prefWidth="120.0" text="Times Rented" />
+                  <TableColumn fx:id="carRevenueColumn" prefWidth="150.0" text="Revenue Generated" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </AnchorPane>
+      </Tab>
+      
+      <!-- Customer Activity Tab -->
+      <Tab text="Customer Activity">
+         <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+            <TableView fx:id="customerReportTable" prefHeight="200.0" prefWidth="200.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+              <columns>
+                <TableColumn fx:id="customerNameColumn" prefWidth="200.0" text="Customer Name" />
+                <TableColumn fx:id="customerPhoneColumn" prefWidth="150.0" text="Phone" />
+                  <TableColumn fx:id="customerRentalsColumn" prefWidth="120.0" text="Rentals" />
+                  <TableColumn fx:id="customerSpentColumn" prefWidth="150.0" text="Total Spent" />
+              </columns>
+               <columnResizePolicy>
+                  <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+               </columnResizePolicy>
+            </TableView>
+         </AnchorPane>
+      </Tab>
+   </TabPane>
+   
+</VBox>

@@ -7,6 +7,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.StackPane;
 import models.Customer;
 import services.CustomerService;
+import dao.CustomerDAO;
 import controllers.utils.Alerts;
 import controllers.utils.Validator;
 
@@ -22,11 +23,13 @@ public class EditCustomerController {
     @FXML private DatePicker dateOfBirthPicker;
     
     private CustomerService customerService;
+    private CustomerDAO customerDAO;
     private Customer currentCustomer;
     
     @FXML
     public void initialize() {
         customerService = new CustomerService();
+        customerDAO = new CustomerDAO();
         customerIdField.setEditable(false);
     }
     
@@ -75,7 +78,7 @@ public class EditCustomerController {
             currentCustomer.setEmail(emailField.getText().trim());
             currentCustomer.setPhone(phoneField.getText().trim());
             currentCustomer.setAddress(addressField.getText().trim());
-            currentCustomer.setLicenseNumber(licenseNumberField.getText().trim());
+            currentCustomer.setLicenseNumber(licenseNumberField.getText().trim().toUpperCase());
             currentCustomer.setDateOfBirth(dateOfBirthPicker.getValue());
             
             if (customerService.updateCustomer(currentCustomer)) {
@@ -118,27 +121,96 @@ public class EditCustomerController {
     }
     
     private boolean validateInput() {
+        // First name validation
         if (Validator.isEmpty(firstNameField.getText())) {
             Alerts.showError("Validation Error", "First name is required");
+            firstNameField.requestFocus();
             return false;
         }
+        if (!Validator.isValidName(firstNameField.getText())) {
+            Alerts.showError("Validation Error", "First name must contain only letters and spaces");
+            firstNameField.requestFocus();
+            return false;
+        }
+        
+        // Last name validation
         if (Validator.isEmpty(lastNameField.getText())) {
             Alerts.showError("Validation Error", "Last name is required");
+            lastNameField.requestFocus();
             return false;
         }
-        if (Validator.isEmpty(phoneField.getText()) || !Validator.isValidPhone(phoneField.getText())) {
-            Alerts.showError("Validation Error", "Valid phone number is required");
+        if (!Validator.isValidName(lastNameField.getText())) {
+            Alerts.showError("Validation Error", "Last name must contain only letters and spaces");
+            lastNameField.requestFocus();
             return false;
         }
-        if (!Validator.isEmpty(emailField.getText()) && !Validator.isValidEmail(emailField.getText())) {
-            Alerts.showError("Validation Error", "Invalid email format");
+        
+        // Email validation
+        if (Validator.isEmpty(emailField.getText())) {
+            Alerts.showError("Validation Error", "Email is required");
+            emailField.requestFocus();
             return false;
         }
-        if (Validator.isEmpty(licenseNumberField.getText()) || 
-            !Validator.isValidLicenseNumber(licenseNumberField.getText())) {
-            Alerts.showError("Validation Error", "Valid license number is required");
+        if (!Validator.isValidEmail(emailField.getText())) {
+            Alerts.showError("Validation Error", "Please enter a valid email address (e.g., name@example.com)");
+            emailField.requestFocus();
             return false;
         }
+        
+        // Phone number validation (Ethiopian format)
+        if (Validator.isEmpty(phoneField.getText())) {
+            Alerts.showError("Validation Error", "Phone number is required");
+            phoneField.requestFocus();
+            return false;
+        }
+        if (!Validator.isValidEthiopianPhone(phoneField.getText())) {
+            Alerts.showError("Validation Error", 
+                "Please enter a valid Ethiopian phone number\n" +
+                "Format: +251 followed by 9 digits\n" +
+                "Examples: +251912345678 or +251 912345678");
+            phoneField.requestFocus();
+            return false;
+        }
+        
+        // License number validation (Ethiopian format)
+        if (Validator.isEmpty(licenseNumberField.getText())) {
+            Alerts.showError("Validation Error", "License number is required");
+            licenseNumberField.requestFocus();
+            return false;
+        }
+        if (!Validator.isValidEthiopianLicense(licenseNumberField.getText())) {
+            Alerts.showError("Validation Error", 
+                "Please enter a valid Ethiopian driver's license\n" +
+                "Format: 2 letters followed by 7 digits\n" +
+                "Example: ET1234567");
+            licenseNumberField.requestFocus();
+            return false;
+        }
+        
+        // Check for duplicate license number (excluding current customer)
+        String licenseNumber = licenseNumberField.getText().trim().toUpperCase();
+        if (currentCustomer != null && customerDAO.licenseExists(licenseNumber, currentCustomer.getCustomerId())) {
+            Alerts.showError("Validation Error", 
+                "This license number is already registered to another customer.\n" +
+                "Each customer must have a unique license number.");
+            licenseNumberField.requestFocus();
+            return false;
+        }
+        
+        // Date of birth validation
+        if (dateOfBirthPicker.getValue() == null) {
+            Alerts.showError("Validation Error", "Date of birth is required");
+            dateOfBirthPicker.requestFocus();
+            return false;
+        }
+        
+        // Address validation (optional but check if provided)
+        if (!Validator.isEmpty(addressField.getText()) && addressField.getText().trim().length() < 5) {
+            Alerts.showError("Validation Error", "Address must be at least 5 characters if provided");
+            addressField.requestFocus();
+            return false;
+        }
+        
         return true;
     }
     
@@ -147,7 +219,8 @@ public class EditCustomerController {
         firstNameField.clear();
         lastNameField.clear();
         emailField.clear();
-        phoneField.clear();
+        phoneField.setText("+251"); // Reset to default prefix
+        phoneField.positionCaret(4);
         addressField.clear();
         licenseNumberField.clear();
         dateOfBirthPicker.setValue(null);

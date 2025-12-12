@@ -2,6 +2,8 @@ package controllers.rent;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import models.Car;
 import models.Customer;
 import models.RentalRecord;
@@ -12,6 +14,10 @@ import controllers.utils.Alerts;
 import controllers.utils.DateUtil;
 import controllers.utils.Validator;
 import java.time.LocalDate;
+import javafx.animation.*;
+import javafx.util.Duration;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 
 public class RentCarController {
     @FXML private TextField customerIdField;
@@ -22,13 +28,18 @@ public class RentCarController {
     @FXML private DatePicker returnDateField;
     @FXML private Label dailyRateLabel;
     @FXML private Label totalCostLabel;
+    @FXML private ImageView animatedCarView;
+    @FXML private Label availableCarsLabel;
     
     private CarService carService;
     private CustomerService customerService;
     private RentService rentService;
     private Car selectedCar;
     private Customer selectedCustomer;
-    private int currentEmployeeId = 1; // Default employee ID - in real app, get from session
+    private int currentEmployeeId = 1; // Default employee ID
+    
+    private Timeline carAnimation;
+    private Circle statusIndicator;
     
     @FXML
     public void initialize() {
@@ -42,6 +53,55 @@ public class RentCarController {
         // Calculate total when dates change
         rentalDateField.valueProperty().addListener((obs, oldVal, newVal) -> calculateTotal());
         returnDateField.valueProperty().addListener((obs, oldVal, newVal) -> calculateTotal());
+        
+        // Load and setup animation
+        setupCarAnimation();
+        updateAvailableCarsCount();
+    }
+    
+    private void setupCarAnimation() {
+        try {
+            // Try to load animated GIF (replace with your actual GIF path)
+            Image animatedGif = new Image(getClass().getResource("/images/car-animation.gif").toExternalForm());
+            animatedCarView.setImage(animatedGif);
+            
+            // Add pulsing effect to the image
+            ScaleTransition pulse = new ScaleTransition(Duration.seconds(2), animatedCarView);
+            pulse.setFromX(1.0);
+            pulse.setFromY(1.0);
+            pulse.setToX(1.05);
+            pulse.setToY(1.05);
+            pulse.setAutoReverse(true);
+            pulse.setCycleCount(Timeline.INDEFINITE);
+            pulse.play();
+            
+        } catch (Exception e) {
+            // Fallback to static image with CSS animation
+            try {
+                Image staticImage = new Image(getClass().getResource("/images/car-static.png").toExternalForm());
+                animatedCarView.setImage(staticImage);
+                
+                // Create manual animation for static image
+                TranslateTransition translate = new TranslateTransition(Duration.seconds(3), animatedCarView);
+                translate.setFromX(-30);
+                translate.setToX(30);
+                translate.setAutoReverse(true);
+                translate.setCycleCount(Timeline.INDEFINITE);
+                translate.play();
+                
+            } catch (Exception ex) {
+                System.err.println("Could not load car image: " + ex.getMessage());
+            }
+        }
+    }
+    
+    private void updateAvailableCarsCount() {
+        try {
+            int availableCount = carService.getAvailableCarsCount();
+            availableCarsLabel.setText(availableCount + " cars available for rent");
+        } catch (Exception e) {
+            availableCarsLabel.setText("Check availability");
+        }
     }
     
     @FXML
@@ -57,12 +117,16 @@ public class RentCarController {
             
             if (selectedCustomer != null) {
                 customerNameLabel.setText(selectedCustomer.getFullName() + " - " + selectedCustomer.getPhone());
+                // Add success animation
+                animateSuccess();
             } else {
                 customerNameLabel.setText("Customer not found");
                 selectedCustomer = null;
+                animateError();
             }
         } catch (NumberFormatException e) {
             Alerts.showError("Error", "Please enter a valid customer ID");
+            animateError();
         }
     }
     
@@ -83,18 +147,22 @@ public class RentCarController {
                     carDetailsLabel.setText(selectedCar.getBrand() + " " + selectedCar.getModel() + 
                                           " - NOT AVAILABLE (" + selectedCar.getAvailability() + ")");
                     selectedCar = null;
+                    animateWarning();
                 } else {
                     carDetailsLabel.setText(selectedCar.getBrand() + " " + selectedCar.getModel() + 
                                           " (" + selectedCar.getYear() + ") - $" + selectedCar.getPricePerDay() + "/day");
                     dailyRateLabel.setText("$" + String.format("%.2f", selectedCar.getPricePerDay()));
                     calculateTotal();
+                    animateSuccess();
                 }
             } else {
                 carDetailsLabel.setText("Car not found");
                 selectedCar = null;
+                animateError();
             }
         } catch (NumberFormatException e) {
             Alerts.showError("Error", "Please enter a valid car ID");
+            animateError();
         }
     }
     
@@ -120,6 +188,42 @@ public class RentCarController {
         
         double total = selectedCar.getPricePerDay() * days;
         totalCostLabel.setText("$" + String.format("%.2f", total));
+        
+        // Animate total cost change
+        FadeTransition fade = new FadeTransition(Duration.millis(300), totalCostLabel);
+        fade.setFromValue(0.5);
+        fade.setToValue(1.0);
+        fade.play();
+    }
+    
+    // Animation helper methods
+    private void animateSuccess() {
+        ScaleTransition scale = new ScaleTransition(Duration.millis(200), animatedCarView);
+        scale.setFromX(1.0);
+        scale.setFromY(1.0);
+        scale.setToX(1.1);
+        scale.setToY(1.1);
+        scale.setAutoReverse(true);
+        scale.setCycleCount(2);
+        scale.play();
+    }
+    
+    private void animateError() {
+        RotateTransition shake = new RotateTransition(Duration.millis(100), animatedCarView);
+        shake.setFromAngle(-5);
+        shake.setToAngle(5);
+        shake.setAutoReverse(true);
+        shake.setCycleCount(4);
+        shake.play();
+    }
+    
+    private void animateWarning() {
+        FadeTransition flash = new FadeTransition(Duration.millis(200), animatedCarView);
+        flash.setFromValue(1.0);
+        flash.setToValue(0.5);
+        flash.setAutoReverse(true);
+        flash.setCycleCount(3);
+        flash.play();
     }
     
     @FXML
@@ -162,11 +266,43 @@ public class RentCarController {
             if (rentService.rentCar(selectedCar.getCarId(), selectedCustomer.getCustomerId(), 
                                   currentEmployeeId, rentalDate, returnDate, totalAmount)) {
                 Alerts.showSuccess("Success", "Car rented successfully!");
+                
+                // Celebrate animation
+                celebrateAnimation();
                 clearFields();
+                updateAvailableCarsCount();
             } else {
                 Alerts.showError("Error", "Failed to process rental. Car may no longer be available.");
             }
         }
+    }
+    
+    private void celebrateAnimation() {
+        // Create a celebration animation
+        ParallelTransition celebrate = new ParallelTransition();
+        
+        // Scale up
+        ScaleTransition scaleUp = new ScaleTransition(Duration.millis(500), animatedCarView);
+        scaleUp.setToX(1.3);
+        scaleUp.setToY(1.3);
+        
+        // Bounce
+        TranslateTransition bounce = new TranslateTransition(Duration.millis(300), animatedCarView);
+        bounce.setFromY(0);
+        bounce.setToY(-30);
+        bounce.setAutoReverse(true);
+        bounce.setCycleCount(3);
+        
+        celebrate.getChildren().addAll(scaleUp, bounce);
+        celebrate.setOnFinished(e -> {
+            // Return to normal
+            ScaleTransition scaleDown = new ScaleTransition(Duration.millis(300), animatedCarView);
+            scaleDown.setToX(1.0);
+            scaleDown.setToY(1.0);
+            scaleDown.play();
+        });
+        
+        celebrate.play();
     }
     
     @FXML
@@ -187,6 +323,3 @@ public class RentCarController {
         selectedCustomer = null;
     }
 }
-
-
-

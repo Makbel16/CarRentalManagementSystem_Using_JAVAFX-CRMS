@@ -9,9 +9,15 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.StackPane;
 import javafx.scene.layout.VBox;
 import models.Customer;
+import models.Car;
+import models.RentalRecord;
 import services.CustomerService;
+import services.RentService;
+import services.CarService;
+import controllers.utils.SessionManager;
 import controllers.utils.Alerts;
 import controllers.utils.Validator;
+import java.util.List;
 
 public class DeleteCustomerController {
     @FXML private TextField customerIdField;
@@ -21,11 +27,15 @@ public class DeleteCustomerController {
     @FXML private VBox customerDetailsBox;
     
     private CustomerService customerService;
+    private RentService rentService;
+    private CarService carService;
     private Customer selectedCustomer;
     
     @FXML
     public void initialize() {
         customerService = new CustomerService();
+        rentService = new RentService();
+        carService = new CarService();
         deleteButton.setDisable(true);
     }
     
@@ -66,16 +76,65 @@ public class DeleteCustomerController {
             return;
         }
         
-        if (Alerts.showConfirmation("Confirm Delete", 
-                "Are you sure you want to permanently delete this customer?\n\n" +
-                selectedCustomer.getFullName() + " (ID: " + selectedCustomer.getCustomerId() + ")")) {
-            
-            if (customerService.deleteCustomer(selectedCustomer.getCustomerId())) {
-                Alerts.showSuccess("Success", "Customer deleted successfully");
-                clearFields();
-            } else {
-                Alerts.showError("Error", "Failed to delete customer");
+        // Check user permission
+        if (!SessionManager.getInstance().canDelete()) {
+            Alerts.showError(
+                "Access Denied",
+                "You do not have permission to delete customers.\n\n" +
+                "Only Admins and Managers can delete records.\n" +
+                "Your current role: " + SessionManager.getInstance().getCurrentUserRole().getDisplayName()
+            );
+            return;
+        }
+        
+        // Check if the customer has active rentals
+        List<RentalRecord> activeRentals = rentService.getActiveRentalRecords();
+        RentalRecord activeRental = null;
+        for (RentalRecord rental : activeRentals) {
+            if (rental.getCustomerId() == selectedCustomer.getCustomerId()) {
+                activeRental = rental;
+                break;
             }
+        }
+        
+        if (activeRental != null) {
+            // Get car details
+            Car car = carService.getCarById(activeRental.getCarId());
+            String carDetails = car != null ? 
+                car.getBrand() + " " + car.getModel() + " (" + car.getRegistrationNumber() + ")" : 
+                "Car ID: " + activeRental.getCarId();
+            
+            // Show warning with rental details
+            if (Alerts.showConfirmation(
+                "Customer Has Active Rental",
+                "WARNING: This customer currently has an active rental!\n\n" +
+                "Customer: " + selectedCustomer.getFullName() + "\n" +
+                "Rented Car: " + carDetails + "\n" +
+                "Rental ID: " + activeRental.getRentalId() + "\n" +
+                "Rental Date: " + activeRental.getRentalDate() + "\n" +
+                "Expected Return: " + activeRental.getReturnDate() + "\n\n" +
+                "Are you sure you want to delete this customer?\n" +
+                "Note: This will NOT cancel the rental.")) {
+                
+                performDelete();
+            }
+        } else {
+            // No active rental, normal confirmation
+            if (Alerts.showConfirmation("Confirm Delete", 
+                    "Are you sure you want to permanently delete this customer?\n\n" +
+                    selectedCustomer.getFullName() + " (ID: " + selectedCustomer.getCustomerId() + ")")) {
+                
+                performDelete();
+            }
+        }
+    }
+    
+    private void performDelete() {
+        if (customerService.deleteCustomer(selectedCustomer.getCustomerId())) {
+            Alerts.showSuccess("Success", "Customer deleted successfully");
+            clearFields();
+        } else {
+            Alerts.showError("Error", "Failed to delete customer");
         }
     }
     

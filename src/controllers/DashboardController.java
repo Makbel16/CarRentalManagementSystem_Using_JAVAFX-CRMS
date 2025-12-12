@@ -12,6 +12,7 @@ import services.CarService;
 import services.CustomerService;
 import services.RentService;
 import models.Car;
+import models.ReportData; // Add this import
 import controllers.utils.Alerts;
 import controllers.utils.DateUtil;
 import java.util.List;
@@ -23,6 +24,13 @@ public class DashboardController {
     @FXML private Label totalEarningsLabel;
     @FXML private Label totalCustomersLabel;
     @FXML private VBox detailsPane;
+    
+    // Add new labels for enhanced dashboard
+    @FXML private Label completedRentalsLabel;
+    @FXML private Label cancelledRentalsLabel;
+    @FXML private Label lateFeesLabel;
+    @FXML private Label damageFeesLabel;
+    @FXML private Label totalEmployeesLabel;
     
     // Add button references
     @FXML private Button showRentingBtn;
@@ -116,6 +124,11 @@ public class DashboardController {
         if (availableCarsLabel != null) availableCarsLabel.setText("0");
         if (totalEarningsLabel != null) totalEarningsLabel.setText("$0.00");
         if (totalCustomersLabel != null) totalCustomersLabel.setText("0");
+        if (completedRentalsLabel != null) completedRentalsLabel.setText("0");
+        if (cancelledRentalsLabel != null) cancelledRentalsLabel.setText("0");
+        if (lateFeesLabel != null) lateFeesLabel.setText("$0.00");
+        if (damageFeesLabel != null) damageFeesLabel.setText("$0.00");
+        if (totalEmployeesLabel != null) totalEmployeesLabel.setText("0");
     }
     
     private void loadStatistics() {
@@ -128,24 +141,33 @@ public class DashboardController {
                 return;
             }
             
-            var stats = dashboardService.getDashboardStats();
-            System.out.println("Stats received: " + stats);
+            // Get comprehensive rental statistics
+            ReportData rentalStats = dashboardService.getRentalStatistics();
             
-            // Update labels
-            rentingCarsLabel.setText(String.valueOf(stats.get("activeRentals")));
-            availableCarsLabel.setText(String.valueOf(stats.get("availableCars")));
+            // Update labels with comprehensive statistics
+            rentingCarsLabel.setText(String.valueOf(rentalStats.getActiveRentals()));
+            availableCarsLabel.setText(String.valueOf(rentalStats.getAvailableCars()));
             
-            Object revenueObj = stats.get("monthlyRevenue");
-            if (revenueObj instanceof Integer) {
-                totalEarningsLabel.setText("$" + revenueObj);
-            } else if (revenueObj instanceof Double) {
-                double revenue = (Double) revenueObj;
-                totalEarningsLabel.setText(String.format("$%.2f", revenue));
-            } else {
-                totalEarningsLabel.setText("$0.00");
+            // Format revenue with 2 decimal places
+            totalEarningsLabel.setText(String.format("$%.2f", rentalStats.getTotalRevenue()));
+            totalCustomersLabel.setText(String.valueOf(rentalStats.getTotalCustomers()));
+            
+            // Update new labels if they exist
+            if (completedRentalsLabel != null) {
+                completedRentalsLabel.setText(String.valueOf(rentalStats.getCompletedRentals()));
             }
-            
-            totalCustomersLabel.setText(String.valueOf(stats.get("totalCustomers")));
+            if (cancelledRentalsLabel != null) {
+                cancelledRentalsLabel.setText(String.valueOf(rentalStats.getCancelledRentals()));
+            }
+            if (lateFeesLabel != null) {
+                lateFeesLabel.setText(String.format("$%.2f", rentalStats.getLateFees()));
+            }
+            if (damageFeesLabel != null) {
+                damageFeesLabel.setText(String.format("$%.2f", rentalStats.getDamageFees()));
+            }
+            if (totalEmployeesLabel != null) {
+                totalEmployeesLabel.setText(String.valueOf(rentalStats.getTotalEmployees()));
+            }
             
             System.out.println("Dashboard labels updated successfully");
             
@@ -370,42 +392,41 @@ public class DashboardController {
             
             detailsPane.getChildren().clear();
             
-            double earnings = 0.0;
+            // Get comprehensive rental statistics
+            ReportData rentalStats = dashboardService.getRentalStatistics();
             
-            if (dashboardService != null) {
-                var stats = dashboardService.getDashboardStats();
-                Object revenueObj = stats.get("monthlyRevenue");
-                
-                if (revenueObj instanceof Integer) {
-                    earnings = ((Integer) revenueObj).doubleValue();
-                } else if (revenueObj instanceof Double) {
-                    earnings = (Double) revenueObj;
-                }
-            } else {
-                earnings = 1250.00; // Sample data
-            }
-            
-            Label title = new Label("Total Earnings (This Month)");
+            Label title = new Label("Revenue Overview");
             title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 10px;");
             
-            Label earningsLabel = new Label(String.format("$%.2f", earnings));
+            // Main revenue display
+            Label earningsLabel = new Label(String.format("$%.2f", rentalStats.getTotalRevenue()));
             earningsLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #2ecc71; -fx-padding: 20px;");
             
-            Label statsLabel = new Label("Revenue Statistics");
-            statsLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+            // Detailed breakdown
+            VBox breakdownBox = new VBox(10);
+            breakdownBox.setStyle("-fx-background-color: #f5f5f5; -fx-padding: 15px;");
             
-            Label detailLabel = new Label(String.format(
-                "• Monthly Revenue: $%.2f\n" +
-                "• From active rentals\n" +
-                "• Updated in real-time",
-                earnings
-            ));
-            detailLabel.setStyle("-fx-font-size: 12px;");
+            Label breakdownTitle = new Label("Revenue Breakdown:");
+            breakdownTitle.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
             
-            VBox statsBox = new VBox(5, statsLabel, detailLabel);
-            statsBox.setStyle("-fx-background-color: #f5f5f5; -fx-padding: 15px;");
+            Label lateFeesDetail = new Label(String.format("• Late Fees: $%.2f", rentalStats.getLateFees()));
+            Label damageFeesDetail = new Label(String.format("• Damage Fees: $%.2f", rentalStats.getDamageFees()));
+            Label baseRevenueDetail = new Label(String.format("• Base Revenue: $%.2f", 
+                rentalStats.getTotalRevenue() - rentalStats.getLateFees() - rentalStats.getDamageFees()));
             
-            VBox container = new VBox(20, title, earningsLabel, statsBox);
+            breakdownBox.getChildren().addAll(breakdownTitle, lateFeesDetail, damageFeesDetail, baseRevenueDetail);
+            
+            // Monthly comparison
+            Map<String, Object> comparison = dashboardService.getMonthlyComparison();
+            double revenueChange = (double) comparison.get("revenueChange");
+            String changeIndicator = revenueChange >= 0 ? "▲" : "▼";
+            String changeColor = revenueChange >= 0 ? "#27ae60" : "#e74c3c";
+            
+            Label comparisonLabel = new Label(String.format(
+                "Monthly Change: %s %.1f%%", changeIndicator, Math.abs(revenueChange)));
+            comparisonLabel.setStyle(String.format("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: %s;", changeColor));
+            
+            VBox container = new VBox(20, title, earningsLabel, breakdownBox, comparisonLabel);
             container.setAlignment(Pos.CENTER);
             detailsPane.getChildren().add(container);
             
@@ -428,36 +449,40 @@ public class DashboardController {
             
             detailsPane.getChildren().clear();
             
-            int count = 0;
+            // Get comprehensive rental statistics
+            ReportData rentalStats = dashboardService.getRentalStatistics();
             
-            if (dashboardService != null) {
-                var stats = dashboardService.getDashboardStats();
-                count = (int) stats.get("totalCustomers");
-            } else {
-                count = 24; // Sample data
-            }
-            
-            Label title = new Label("Total Customers");
+            Label title = new Label("Business Overview");
             title.setStyle("-fx-font-size: 18px; -fx-font-weight: bold; -fx-padding: 10px;");
             
-            Label countLabel = new Label(String.valueOf(count));
-            countLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #3498db; -fx-padding: 20px;");
+            // Customer count
+            Label customersLabel = new Label(String.valueOf(rentalStats.getTotalCustomers()));
+            customersLabel.setStyle("-fx-font-size: 36px; -fx-font-weight: bold; -fx-text-fill: #3498db; -fx-padding: 20px;");
             
-            Label statsLabel = new Label("Customer Information");
-            statsLabel.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
-            
-            Label detailLabel = new Label(String.format(
-                "• Total Registered: %d\n" +
-                "• Can rent multiple cars\n" +
-                "• Valid license required",
-                count
-            ));
-            detailLabel.setStyle("-fx-font-size: 12px;");
-            
-            VBox statsBox = new VBox(5, statsLabel, detailLabel);
+            // Detailed stats
+            VBox statsBox = new VBox(10);
             statsBox.setStyle("-fx-background-color: #f5f5f5; -fx-padding: 15px;");
             
-            VBox container = new VBox(20, title, countLabel, statsBox);
+            Label statsTitle = new Label("Detailed Statistics:");
+            statsTitle.setStyle("-fx-font-size: 14px; -fx-font-weight: bold;");
+            
+            Label completedDetail = new Label(String.format("• Completed Rentals: %d", rentalStats.getCompletedRentals()));
+            Label cancelledDetail = new Label(String.format("• Cancelled Rentals: %d", rentalStats.getCancelledRentals()));
+            Label employeesDetail = new Label(String.format("• Total Employees: %d", rentalStats.getTotalEmployees()));
+            
+            statsBox.getChildren().addAll(statsTitle, completedDetail, cancelledDetail, employeesDetail);
+            
+            // Monthly comparison for rentals
+            Map<String, Object> comparison = dashboardService.getMonthlyComparison();
+            int rentalChange = (int) comparison.get("rentalChange");
+            String changeIndicator = rentalChange >= 0 ? "▲" : "▼";
+            String changeColor = rentalChange >= 0 ? "#27ae60" : "#e74c3c";
+            
+            Label comparisonLabel = new Label(String.format(
+                "Rental Growth: %s %d%%", changeIndicator, Math.abs(rentalChange)));
+            comparisonLabel.setStyle(String.format("-fx-font-size: 14px; -fx-font-weight: bold; -fx-text-fill: %s;", changeColor));
+            
+            VBox container = new VBox(20, title, customersLabel, statsBox, comparisonLabel);
             container.setAlignment(Pos.CENTER);
             detailsPane.getChildren().add(container);
             

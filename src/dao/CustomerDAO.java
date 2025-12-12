@@ -156,6 +156,45 @@ public class CustomerDAO {
         
         return customer;
     }
+    
+    // Check if license number already exists (for another customer)
+    public boolean licenseExists(String licenseNumber, int excludeCustomerId) {
+        String sql = "SELECT COUNT(*) FROM customers WHERE license_number = ? AND customer_id != ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, licenseNumber);
+            pstmt.setInt(2, excludeCustomerId);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+    
+    // Check if license number exists (for new customer)
+    public boolean licenseExists(String licenseNumber) {
+        String sql = "SELECT COUNT(*) FROM customers WHERE license_number = ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            pstmt.setString(1, licenseNumber);
+            ResultSet rs = pstmt.executeQuery();
+            
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
 }
 
 

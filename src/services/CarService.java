@@ -1,7 +1,12 @@
 package services;
 
+
+import application.DatabaseConnection;
 import dao.CarDAO;
 import models.Car;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.List;
 
 public class CarService {
@@ -77,25 +82,37 @@ public class CarService {
     }
 
     public boolean updateCarStatus(int carId, String status) {
-        try {
-            // Validate status
-            List<String> validStatuses = List.of("Available", "Rented", "Maintenance", "Unavailable");
-            if (!validStatuses.contains(status)) {
-                System.err.println("Invalid car status: " + status);
-                return false;
+        String sql = "UPDATE cars SET status = ?, availability = ? WHERE car_id = ?";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement pstmt = conn.prepareStatement(sql)) {
+            
+            String availability;
+            switch (status.toLowerCase()) {
+                case "available":
+                case "active":
+                    status = "Available";
+                    availability = "Available";
+                    break;
+                case "rented":
+                    status = "Rented";
+                    availability = "Rented";
+                    break;
+                case "maintenance":
+                case "unavailable":
+                default:
+                    status = "Unavailable";
+                    availability = "Unavailable";
             }
             
-            // Get the car first to ensure it exists
-            Car car = carDAO.getCarById(carId);
-            if (car == null) {
-                System.err.println("Car not found with ID: " + carId);
-                return false;
-            }
+            pstmt.setString(1, status);
+            pstmt.setString(2, availability);
+            pstmt.setInt(3, carId);
             
-            // Update the status in database
-            return carDAO.updateCarStatus(carId, status);
+            int rowsUpdated = pstmt.executeUpdate();
+            return rowsUpdated > 0;
             
-        } catch (Exception e) {
+        } catch (SQLException e) {
             System.err.println("Error updating car status: " + e.getMessage());
             e.printStackTrace();
             return false;

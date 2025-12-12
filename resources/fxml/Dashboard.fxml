@@ -5,96 +5,99 @@
 <?import javafx.scene.text.*?>
 <?import javafx.geometry.Insets?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
+<ScrollPane fitToWidth="true" fitToHeight="true"
+            xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="controllers.DashboardController"
-            style="-fx-background-color: #f5f5f5;">
-
-    <VBox spacing="20" AnchorPane.topAnchor="20" 
-          AnchorPane.leftAnchor="20" AnchorPane.rightAnchor="20"
-          AnchorPane.bottomAnchor="20">
-        
-        <!-- Header -->
-        <Label text="Dashboard Overview" 
-               style="-fx-font-size: 28px; -fx-font-weight: bold;"/>
-        
-        <!-- Stats Grid -->
-         <GridPane hgap="20" vgap="20">
-            <columnConstraints>
-                <ColumnConstraints prefWidth="200" hgrow="ALWAYS"/>
-                <ColumnConstraints prefWidth="200" hgrow="ALWAYS"/>
-                <ColumnConstraints prefWidth="200" hgrow="ALWAYS"/>
-                <ColumnConstraints prefWidth="200" hgrow="ALWAYS"/>
-            </columnConstraints>
-            
+            stylesheets="@../../css/style.css">
+   
+   <content>
+      <!-- Background with image EXACTLY like CarMain -->
+      <VBox spacing="20.0" styleClass="main-container" 
+            style="-fx-background-image: url('images/dashboard-background.jpg');
+                   -fx-background-size: cover;
+                   -fx-background-position: center;
+                   -fx-background-repeat: no-repeat;">
+         
+         <padding>
+            <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+         </padding>
+         
+         <!-- Refresh Button at Top Right -->
+         <HBox alignment="TOP_RIGHT">
+            <Button text="🔄 Refresh Dashboard" 
+                    onAction="#handleRefresh"
+                    styleClass="dashboard-icon-button refresh-btn" 
+                    minWidth="160"
+                    minHeight="60"/>
+         </HBox>
+         
+         <!-- Title EXACTLY like CarMain -->
+         <Label text="Dashboard Overview" styleClass="car-page-title"
+                alignment="CENTER"
+                maxWidth="Infinity">
+            <font>
+               <Font name="System Bold" size="28.0" />
+            </font>
+         </Label>
+         
+         <!-- Cards Row EXACTLY like CarMain buttons -->
+         <HBox spacing="20" alignment="CENTER" VBox.vgrow="ALWAYS">
             <!-- Renting Cars Card -->
-            <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20; 
-                        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);"
-                  GridPane.columnIndex="0">
-                <Label text="Currently Renting" style="-fx-font-size: 14px; -fx-text-fill: #666;"/>
-                <Label fx:id="rentingCarsLabel" text="0" 
-                       style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #e74c3c;"/>
-                <Button text="View Details" onAction="#showRentingCars" 
-                       style="-fx-background-color: #e74c3c; -fx-text-fill: white; -fx-margin: 10 0 0 0;"/>
-            </VBox>
+            <Button id="rentingCardBtn"
+                    text="Currently Renting" 
+                    onAction="#showRentingCars" 
+                    styleClass="dashboard-icon-button" 
+                    minWidth="160"
+                    minHeight="140">
+               <graphic>
+                  <Label fx:id="rentingCarsLabel" text="0" styleClass="card-stat-label"/>
+               </graphic>
+            </Button>
             
             <!-- Available Cars Card -->
-            <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;
-                        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);"
-                  GridPane.columnIndex="1">
-                <Label text="Available Cars" style="-fx-font-size: 14px; -fx-text-fill: #666;"/>
-                <Label fx:id="availableCarsLabel" text="0" 
-                       style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #2ecc71;"/>
-                <Button text="View Details" onAction="#showAvailableCars" 
-                       style="-fx-background-color: #2ecc71; -fx-text-fill: white; -fx-margin: 10 0 0 0;"/>
-            </VBox>
+            <Button id="availableCardBtn"
+                    text="Available Cars" 
+                    onAction="#showAvailableCars" 
+                    styleClass="dashboard-icon-button" 
+                    minWidth="160"
+                    minHeight="140">
+               <graphic>
+                  <Label fx:id="availableCarsLabel" text="0" styleClass="card-stat-label"/>
+               </graphic>
+            </Button>
             
             <!-- Total Earnings Card -->
-            <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;
-                        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);"
-                  GridPane.columnIndex="2">
-                <Label text="Monthly Revenue" style="-fx-font-size: 14px; -fx-text-fill: #666;"/>
-                <Label fx:id="totalEarningsLabel" text="0" 
-                       style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #f39c12;"/>
-                <Button text="View Details" onAction="#showTotalEarnings" 
-                       style="-fx-background-color: #f39c12; -fx-text-fill: white; -fx-margin: 10 0 0 0;"/>
-            </VBox>
+            <Button id="earningsCardBtn"
+                    text="Monthly Revenue" 
+                    onAction="#showTotalEarnings" 
+                    styleClass="dashboard-icon-button" 
+                    minWidth="160"
+                    minHeight="140">
+               <graphic>
+                  <Label fx:id="totalEarningsLabel" text="0" styleClass="card-stat-label"/>
+               </graphic>
+            </Button>
             
             <!-- Total Customers Card -->
-            <VBox style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;
-                        -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);"
-                  GridPane.columnIndex="3">
-                <Label text="Total Customers" style="-fx-font-size: 14px; -fx-text-fill: #666;"/>
-                <Label fx:id="totalCustomersLabel" text="0" 
-                       style="-fx-font-size: 32px; -fx-font-weight: bold; -fx-text-fill: #3498db;"/>
-                <Button text="View Details" onAction="#showCustomers" 
-                       style="-fx-background-color: #3498db; -fx-text-fill: white; -fx-margin: 10 0 0 0;"/>
-            </VBox>
-        </GridPane>
-        
-        <!-- Details Pane -->
-        <Label text="Details" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
-        
-        <VBox fx:id="detailsPane" 
-              style="-fx-background-color: white; -fx-background-radius: 10; -fx-padding: 20;
-                    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
-            <!-- Content will be loaded dynamically by controller -->
-            <Label text="Click on any 'View Details' button above to see more information" 
-                   style="-fx-font-size: 14px; -fx-text-fill: #999; -fx-alignment: center;"/>
-        </VBox>
-        
-        <!-- Refresh Button -->
-        <HBox alignment="CENTER_RIGHT">
-            <Button text="Refresh Dashboard" 
-                    onAction="#handleRefresh"
-                    style="-fx-background-color: #9b59b6; -fx-text-fill: white; -fx-font-size: 14px;
-                          -fx-padding: 10 20; -fx-background-radius: 5;"/>
-        </HBox>
-        
-        <!-- Details Pane -->
-        <Label text="Details" style="-fx-font-size: 18px; -fx-font-weight: bold;"/>
-
-        
-    </VBox>
-
-</AnchorPane>
+            <Button id="customersCardBtn"
+                    text="Total Customers" 
+                    onAction="#showCustomers" 
+                    styleClass="dashboard-icon-button" 
+                    minWidth="160"
+                    minHeight="140">
+               <graphic>
+                  <Label fx:id="totalCustomersLabel" text="0" styleClass="card-stat-label"/>
+               </graphic>
+            </Button>
+         </HBox>
+         
+         <!-- Details Pane -->
+         <VBox fx:id="detailsPane" spacing="10" style="-fx-padding: 20 0 0 0;" VBox.vgrow="ALWAYS">
+            <Label text="Details will appear here" 
+                   style="-fx-font-size: 14px; -fx-text-fill: white; -fx-alignment: center;"/>
+         </VBox>
+         
+      </VBox>
+   </content>
+</ScrollPane>

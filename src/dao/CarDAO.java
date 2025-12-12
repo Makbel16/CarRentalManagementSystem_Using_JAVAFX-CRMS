@@ -81,19 +81,21 @@ public class CarDAO {
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql)) {
             
-            // Determine availability based on status
             String availability;
             switch (status.toLowerCase()) {
                 case "available":
-                case "active":
+                    status = "Available";
                     availability = "Available";
                     break;
+                case "active":
                 case "rented":
-                    availability = "Rented";
+                    status = "Active";  // Keep status as Active for active rentals
+                    availability = "Rented";  // But set availability to Rented
                     break;
                 case "maintenance":
                 case "unavailable":
                 default:
+                    status = "Unavailable";
                     availability = "Unavailable";
             }
             
@@ -190,7 +192,7 @@ public class CarDAO {
     
     public List<Car> getAvailableCars() {
         List<Car> cars = new ArrayList<>();
-        String sql = "SELECT * FROM cars WHERE availability='Available' AND status='Active' ORDER BY brand, model";
+        String sql = "SELECT * FROM cars WHERE availability='Available' ORDER BY brand, model";
         
         try (Connection conn = DatabaseConnection.getConnection();
              Statement stmt = conn.createStatement();
@@ -204,7 +206,6 @@ public class CarDAO {
         }
         return cars;
     }
-    
     public List<Car> getRentedCars() {
         List<Car> cars = new ArrayList<>();
         String sql = "SELECT * FROM cars WHERE availability='Rented' ORDER BY brand, model";
@@ -236,5 +237,21 @@ public class CarDAO {
         car.setMileage(rs.getInt("mileage"));
         car.setStatus(rs.getString("status"));
         return car;
+    }
+    public int getAvailableCarsCount() {
+        String sql = "SELECT COUNT(*) as count FROM cars WHERE availability='Available'";
+        
+        try (Connection conn = DatabaseConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            
+            if (rs.next()) {
+                return rs.getInt("count");
+            }
+        } catch (SQLException e) {
+            System.err.println("Error getting available cars count: " + e.getMessage());
+            e.printStackTrace();
+        }
+        return 0;
     }
 }

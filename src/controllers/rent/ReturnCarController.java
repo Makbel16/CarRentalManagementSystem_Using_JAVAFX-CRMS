@@ -14,7 +14,6 @@ import controllers.utils.DateUtil;
 import controllers.utils.Validator;
 import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
-
 public class ReturnCarController {
     @FXML private TextField rentalIdField;
     @FXML private Label customerNameLabel;

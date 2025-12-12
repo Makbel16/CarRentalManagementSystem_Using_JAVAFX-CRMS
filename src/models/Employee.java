@@ -14,10 +14,12 @@ public class Employee {
     private double salary;
     private LocalDate hireDate;
     private String status;
+    private UserRole role; // New field for role-based access
 
     // Constructors
     public Employee() {
         this.status = "Active";
+        this.role = UserRole.EMPLOYEE; // Default role
     }
     
     public Employee(String firstName, String lastName, String email, String position) {
@@ -117,6 +119,18 @@ public class Employee {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+    
+    public UserRole getRole() {
+        return role;
+    }
+    
+    public void setRole(UserRole role) {
+        this.role = role;
+    }
+    
+    public void setRole(String roleString) {
+        this.role = UserRole.fromString(roleString);
     }
 
     // Helper methods

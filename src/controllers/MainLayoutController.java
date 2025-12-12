@@ -6,8 +6,11 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.StackPane;
 import javafx.stage.Stage;
+import controllers.utils.SessionManager;
 import controllers.utils.Alerts;
 
 public class MainLayoutController {
@@ -15,9 +18,75 @@ public class MainLayoutController {
     private StackPane contentPane;  // Make sure this matches your FXML
     
     @FXML
+    private Button dashboardBtn;
+    
+    @FXML
+    private Button carsBtn;
+    
+    @FXML
+    private Button customersBtn;
+    
+    @FXML
+    private Button employeesBtn;
+    
+    @FXML
+    private Button rentCarBtn;
+    
+    @FXML
+    private Button returnCarBtn;
+    
+    @FXML
+    private Button reportsBtn;
+    
+    @FXML
     public void initialize() {
         System.out.println("MainLayoutController initialized - Loading Dashboard...");
+        
+        // Configure menu based on user role
+        configureMenuByRole();
+        
         loadDashboard();  // Automatically load dashboard on startup
+    }
+    
+    /**
+     * Configure menu visibility and access based on logged-in user's role
+     */
+    private void configureMenuByRole() {
+        SessionManager session = SessionManager.getInstance();
+        
+        if (!session.isLoggedIn()) {
+            System.out.println("WARNING: No user session found!");
+            return;
+        }
+        
+        System.out.println("Configuring menu for: " + session.toString());
+        
+        // Dashboard - Everyone can access
+        dashboardBtn.setDisable(false);
+        
+        // Cars - Everyone can access
+        carsBtn.setDisable(false);
+        
+        // Customers - Everyone can access
+        customersBtn.setDisable(false);
+        
+        // Employees - Only ADMIN can access
+        if (!session.canManageEmployees()) {
+            employeesBtn.setDisable(true);
+            employeesBtn.setVisible(false);
+            employeesBtn.setManaged(false);
+        }
+        
+        // Rent/Return - Everyone can access
+        rentCarBtn.setDisable(false);
+        returnCarBtn.setDisable(false);
+        
+        // Reports - Only managers and admins can access
+        if (!session.canViewReports()) {
+            reportsBtn.setDisable(true);
+            reportsBtn.setVisible(false);
+            reportsBtn.setManaged(false);
+        }
     }
     @FXML
     private void loadDashboard() {
@@ -48,10 +117,19 @@ public class MainLayoutController {
     private void loadReturnCar() {
         loadContent("/fxml/rent/ReturnCar.fxml");
     }
+    
+    @FXML
+    private void loadReports() {
+        loadContent("/fxml/reports/Reports.fxml");
+    }
 
     @FXML
     private void handleLogout() {
         try {
+            // Clear session
+            SessionManager.getInstance().logout();
+            System.out.println("User logged out successfully");
+            
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
             Parent root = loader.load();
             Stage stage = (Stage) contentPane.getScene().getWindow();

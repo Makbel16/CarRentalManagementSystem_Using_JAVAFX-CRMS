@@ -9,8 +9,20 @@ public class Validator {
         "^[A-Za-z0-9+_.-]+@(.+)$"
     );
     
-    private static final Pattern PHONE_PATTERN = Pattern.compile(
-        "^[0-9\\-\\+\\s\\(\\)]+$"
+    // Ethiopian phone format: +251 followed by 9 digits (total 13 characters)
+    // Formats: +251912345678 or +251 912345678 or +251-912345678
+    private static final Pattern ETHIOPIAN_PHONE_PATTERN = Pattern.compile(
+        "^\\+251[\\s-]?[79]\\d{8}$"
+    );
+    
+    // Ethiopian driver's license format: 2 letters followed by 7 digits (e.g., ET1234567)
+    private static final Pattern ETHIOPIAN_LICENSE_PATTERN = Pattern.compile(
+        "^[A-Z]{2}\\d{7}$"
+    );
+    
+    // Name pattern: Only letters and spaces allowed
+    private static final Pattern NAME_PATTERN = Pattern.compile(
+        "^[a-zA-Z\\s]+$"
     );
     
     public static boolean isEmpty(String value) {
@@ -22,9 +34,32 @@ public class Validator {
         return EMAIL_PATTERN.matcher(email).matches();
     }
     
+    // Generic phone validation (kept for backwards compatibility)
     public static boolean isValidPhone(String phone) {
         if (isEmpty(phone)) return false;
-        return PHONE_PATTERN.matcher(phone).matches() && phone.length() >= 10;
+        // Use Ethiopian phone validation
+        return isValidEthiopianPhone(phone);
+    }
+    
+    // Ethiopian phone validation
+    public static boolean isValidEthiopianPhone(String phone) {
+        if (isEmpty(phone)) return false;
+        // Remove spaces and dashes for validation
+        String cleanPhone = phone.replaceAll("[\\s-]", "");
+        return ETHIOPIAN_PHONE_PATTERN.matcher(phone).matches();
+    }
+    
+    // Ethiopian license validation
+    public static boolean isValidEthiopianLicense(String license) {
+        if (isEmpty(license)) return false;
+        String upperLicense = license.toUpperCase().trim();
+        return ETHIOPIAN_LICENSE_PATTERN.matcher(upperLicense).matches();
+    }
+    
+    // Name validation (only characters and spaces)
+    public static boolean isValidName(String name) {
+        if (isEmpty(name)) return false;
+        return NAME_PATTERN.matcher(name.trim()).matches();
     }
     
     public static boolean isValidPrice(double price) {

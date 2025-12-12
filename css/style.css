@@ -320,8 +320,8 @@
     -fx-graphic-text-gap: 15;
     -fx-text-alignment: center;
     -fx-wrap-text: true;
-    -fx-min-width: 160px;
-    -fx-min-height: 140px;
+    -fx-min-width: 180px;
+    -fx-min-height: 160px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center 25px;
     -fx-background-size: 60px 60px;
@@ -861,8 +861,8 @@
     -fx-graphic-text-gap: 15;
     -fx-text-alignment: center;
     -fx-wrap-text: true;
-    -fx-min-width: 160px;
-    -fx-min-height: 140px;
+    -fx-min-width: 180px;
+    -fx-min-height: 160px;
     -fx-background-repeat: no-repeat;
     -fx-background-position: center 25px;
     -fx-background-size: 60px 60px;
@@ -870,7 +870,7 @@
 
 /* Stat label inside button */
 .card-stat-label {
-    -fx-font-size: 32px;
+    -fx-font-size: 36px;
     -fx-font-weight: bold;
     -fx-text-fill: white;
     -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.8), 2, 0, 0, 1);
@@ -939,9 +939,8 @@
 /* Refresh button - different style */
 .refresh-btn {
     -fx-background-image: url('../images/dashboard/refresh.png');
-    -fx-min-height: 60px;
-    -fx-padding: 30 15 15 15;
-    -fx-min-width: 160px;
+    -fx-min-height: 80px;
+    -fx-padding: 40 20 20 20;
 }
 
 .refresh-btn:hover {

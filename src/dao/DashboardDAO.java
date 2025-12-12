@@ -27,9 +27,8 @@ public class DashboardDAO {
         return 0;
     }
     
-    // Get available cars count
     public int getAvailableCarsCount() {
-        String sql = "SELECT COUNT(*) FROM cars WHERE availability = 'Available' AND status = 'Active'";
+        String sql = "SELECT COUNT(*) FROM cars WHERE availability = 'Available'";
         
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement pstmt = conn.prepareStatement(sql);
@@ -44,7 +43,6 @@ public class DashboardDAO {
         }
         return 0;
     }
-    
     // Get total customers count
     public int getTotalCustomersCount() {
         String sql = "SELECT COUNT(*) FROM customers";
